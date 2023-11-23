@@ -40,6 +40,7 @@ const Avatar = () => {
           {user?.name
             .split(' ')
             .map((item: string) => item[0])
+            .slice(0, 2)
             .join('')}
         </span>
       </div>
