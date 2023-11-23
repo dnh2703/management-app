@@ -31,7 +31,7 @@ app.use('/api/v1/dashboard', DashboardRoute)
 app.use(notFound)
 app.use(errorHandleMiddleware)
 
-const port = 3000
+const port = 3000 || process.env.PORT
 
 const start = async () => {
   try {
