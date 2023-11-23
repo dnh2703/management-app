@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
+import { IToken } from '~/types/token.types'
 
-const TokenSchema = new mongoose.Schema(
+const TokenSchema = new mongoose.Schema<IToken>(
   {
     refreshToken: { type: String, required: true },
     ip: { type: String, required: true },

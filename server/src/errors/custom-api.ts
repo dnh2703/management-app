@@ -2,9 +2,11 @@ import { StatusCodes } from 'http-status-codes'
 
 class CustomAPIError extends Error {
   statusCode: StatusCodes
-  constructor(message: string, statusCode: StatusCodes) {
+  name: string
+  constructor(name: string, statusCode: StatusCodes, message: string) {
     super(message)
     this.statusCode = statusCode
+    this.name = name
   }
 }
 
