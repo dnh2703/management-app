@@ -71,7 +71,7 @@ const login = async (req: Request, res: Response) => {
     const user = await User.findOne({ email })
 
     if (!user) {
-      throw new CustomAPIError('EMAIL_INVALID', StatusCodes.BAD_REQUEST, 'Email is not correct')
+      throw new CustomAPIError('EMAIL_INVALID', StatusCodes.BAD_REQUEST, `Email don't already exits`)
     }
 
     const payloadJWT = createPayload({

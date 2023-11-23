@@ -8,7 +8,7 @@ import {
   getSingleProject,
   updateProject
 } from '~/controllers/project.controllers'
-import { authenticateUser } from '~/middlewares/authentication.middlewares'
+import { authenticateUser, authorizePermissions } from '~/middlewares/authentication.middlewares'
 
 const router = express.Router()
 
@@ -18,7 +18,7 @@ router.route('/no-department').get(authenticateUser, getAllProjectWithoutDepartm
 router
   .route('/:id')
   .get(authenticateUser, getSingleProject)
-  .patch(authenticateUser, updateProject)
-  .delete(authenticateUser, deleteProject)
+  .patch(authenticateUser, authorizePermissions('admin'), updateProject)
+  .delete(authenticateUser, authorizePermissions('admin'), deleteProject)
 
 export default router
