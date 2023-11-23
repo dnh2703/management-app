@@ -68,6 +68,14 @@ const RegisterForm = () => {
           <Input
             disabled={isLoading}
             className='placeholder-zinc-300 w-full'
+            isError={!!errors.name}
+            errorMessage={errors.name?.message}
+            {...register('name', { required: 'Please fill the name' })}
+            placeholder='username'
+          />
+          <Input
+            disabled={isLoading}
+            className='placeholder-zinc-300 w-full'
             isError={!!errors.email}
             errorMessage={errors.email?.message}
             {...register('email', { required: 'Please fill the email' })}
