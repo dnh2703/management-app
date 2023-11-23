@@ -39,7 +39,7 @@ const DepartmentForm = () => {
     })
   }
 
-  const employeeOptions = (inputValue: string, callback: (options: MultiSelectOption[]) => void) => {
+  const employeeOptions = (_inputValue: string, callback: (options: MultiSelectOption[]) => void) => {
     employeeApi.getAllEmployeeWithoutDepartment().then((res) => {
       const result = res.data.ListEmployeeWithoutDepartment
       const options: MultiSelectOption[] = [...result].map((item: IEmployee) => {

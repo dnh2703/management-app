@@ -117,7 +117,7 @@ const ProjectEdit = () => {
       }, 1)
     })
   }
-  const departmentOptions = (inputValue: string, callback: (options: MultiSelectOption[]) => void) => {
+  const departmentOptions = (_inputValue: string, callback: (options: MultiSelectOption[]) => void) => {
     departmentApi.getAllDepartment().then((res) => {
       const result = res.data.ListDepartment
       const options: MultiSelectOption[] = [...result].map((item: IDepartment) => {
