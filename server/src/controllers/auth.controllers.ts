@@ -67,6 +67,7 @@ const login = async (req: Request, res: Response) => {
     }
 
     const email = response.data.email
+    const picture = response.data.picture
 
     const user = await User.findOne({ email })
 
@@ -103,7 +104,7 @@ const login = async (req: Request, res: Response) => {
       }
 
       const accessToken = createJWT(payloadJWT, '12h')
-      res.status(StatusCodes.OK).json({ user: payloadJWT, refreshToken, accessToken })
+      res.status(StatusCodes.OK).json({ user: { ...payloadJWT, picture }, refreshToken, accessToken })
       return
     }
 
@@ -115,7 +116,7 @@ const login = async (req: Request, res: Response) => {
     const userToken = { refreshToken, ip, userAgent, user: user._id }
 
     await Token.create(userToken)
-    return res.status(StatusCodes.OK).json({ user: payloadJWT, refreshToken, accessToken })
+    return res.status(StatusCodes.OK).json({ user: { ...payloadJWT, picture }, refreshToken, accessToken })
   }
 
   if (!email || !password) {
