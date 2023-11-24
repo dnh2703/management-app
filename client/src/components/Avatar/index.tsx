@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useDisclosure } from '~/hooks'
+import { FaUser } from 'react-icons/fa'
 import { logout } from '~/libs/auth.libs'
 import storage from '~/utils/storage'
 
@@ -36,13 +37,13 @@ const Avatar = () => {
         onClick={() => toggle()}
         ref={avatarRef}
       >
-        <span className='font-medium text-gray-600 '>
-          {user?.name
-            .split(' ')
-            .map((item: string) => item[0])
-            .slice(0, 2)
-            .join('')}
-        </span>
+        {user.picture ? (
+          <img src={user.picture} className='w-10 h-10 rounded-s-full' />
+        ) : (
+          <span className='font-medium text-gray-600 '>
+            <FaUser />
+          </span>
+        )}
       </div>
 
       <div
