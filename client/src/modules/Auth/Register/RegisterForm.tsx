@@ -4,7 +4,6 @@ import { useGoogleLogin } from '@react-oauth/google'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, Input, Spinner } from '~/components'
 import { RegisterSchema } from './register.schema'
-import { handleLoadUser, handleLogInResponse } from '~/libs/auth.libs'
 import { AxiosError } from 'axios'
 import authApi from '~/services/modules/auth.service'
 import { handleAxiosError } from '~/utils/axios'
@@ -27,8 +26,10 @@ const RegisterForm = () => {
       .register(data)
       .then((res) => {
         if (res.status === 201) {
-          handleLoadUser(res)
-          handleLogInResponse(res)
+          toast.success('Register successfully!', {
+            position: toast.POSITION.TOP_RIGHT
+          })
+          navigate('/auth/login')
         }
       })
       .catch((error: AxiosError) => {

@@ -4,7 +4,7 @@ import { router } from '~/main'
 import storage from '~/utils/storage'
 
 const handleLogInResponse = (res: AxiosResponse) => {
-  toast.success('Login successful', {
+  toast.success('Login successfully!', {
     position: toast.POSITION.TOP_RIGHT
   })
   storage.setAccessToken(res.data.accessToken)
