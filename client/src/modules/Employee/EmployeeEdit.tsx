@@ -97,7 +97,7 @@ const EmployeeEdit = () => {
 
   return (
     <>
-      <h3 className='font-bold text-2xl pb-4'>New Employee</h3>
+      <h3 className='font-bold text-2xl pb-4'>Edit Employee</h3>
       <div className='bg-white px-6 pb-8 rounded-lg shadow'>
         <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-2 gap-x-4 gap-y-4  py-6'>
           <div className='col-span-2 sm:col-span-1'>

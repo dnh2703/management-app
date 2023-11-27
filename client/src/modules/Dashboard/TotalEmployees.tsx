@@ -21,7 +21,7 @@ const TotalEmployees = ({ employees, isLoading }: TotalEmployeesProps) => {
         <h3 className='font-bold text-4xl pt-2'>{employees?.length}</h3>
         <p className='text-zinc-600 text-sm font-medium'>Total employees</p>
         <p className='text-blue-600 text-sm pt-6 font-bold'>
-          {((employees.filter((item) => item.gender == 'male')?.length / employees?.length) * 100).toFixed(2)}% Male
+          {((employees.filter((item) => item.gender == 'male')?.length / employees?.length) * 100).toFixed(0)}% Male
         </p>
       </div>
     </div>

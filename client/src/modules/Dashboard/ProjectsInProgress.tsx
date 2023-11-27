@@ -24,7 +24,9 @@ const ProjectsInProgress = ({ isLoading, projects }: ProjectsInProgressProps) =>
         backgroundColor={['rgba(231, 76, 60, 1)', '#d1d5db']}
       />
       <div className='relative'>
-        <p className='text-center font-semibold text-sm pt-2 pb-4'>That is the percentage of projects in progress</p>
+        <p className='text-center font-semibold text-sm pt-2 pb-4'>
+          The percentage of ongoing projects to total completed projects
+        </p>
         <h3 className='absolute text-7xl -top-20 left-1/2 -translate-x-1/2 font-bold'>
           {((PROJECT_IN_PROGRESS / (PROJECT_DONE + PROJECT_IN_PROGRESS)) * 100).toFixed(1)}%
         </h3>

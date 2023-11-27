@@ -34,7 +34,7 @@ const CustomerTable = () => {
           <td className='px-4 py-2'>
             <span
               className={`px-4 py-1 capitalize whitespace-nowrap rounded-full text-center font-medium ${
-                customer.status == 'active' ? 'bg-green-200 text-green-600' : 'bg-red-200 text-red-600'
+                customer.status == 'active' ? 'bg-green-200 text-green-600' : 'bg-gray-200 text-gray-600'
               }`}
             >
               {customer.status}

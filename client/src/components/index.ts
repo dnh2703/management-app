@@ -15,6 +15,7 @@ import ProjectStatus from './ProjectStatus'
 import InputDatePicker from './InputDatePicker'
 import LoadingSmallCard from './LoadingSmallCard'
 import HalfDoughnutChart from './HalfDoughnutChart'
+import Breadcrumb from './Breadcrumb'
 import BarChart from './BarChart'
 import NotFoundPage from './404'
 import InternalServerPage from './500'
@@ -38,6 +39,7 @@ export {
   LoadingSmallCard,
   HalfDoughnutChart,
   BarChart,
+  Breadcrumb,
   NotFoundPage,
   InternalServerPage
 }

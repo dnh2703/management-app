@@ -24,7 +24,7 @@ const TotalCustomers = ({ customers, isLoading }: TotalCustomersProps) => {
         <h3 className='font-bold text-4xl pt-2'>{customers?.length}</h3>
         <p className='text-zinc-600 text-sm font-medium'>Total customers</p>
         <p className='text-teal-600 text-sm pt-6 font-bold'>
-          {((findMostFrequentElement(ListCountry)?.times / ListCountry?.length) * 100).toFixed(2)}%{' '}
+          {((findMostFrequentElement(ListCountry)?.times / ListCountry?.length) * 100).toFixed(0)}%{' '}
           {findMostFrequentElement(ListCountry)?.name}
         </p>
       </div>

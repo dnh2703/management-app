@@ -11,9 +11,9 @@ const TableAction = ({ handleDeleteEvent, handleEditEvent }: TableActionProps) =
     <div className=' flex justify-center relative'>
       <div
         onClick={handleEditEvent}
-        className='cursor-pointer relative  px-2 py-1 rounded-md hover:bg-blue-200 transition-colors group'
+        className='cursor-pointer relative px-2 py-1 rounded-md hover:bg-blue-200 transition-colors group'
       >
-        <TbEdit className='text-blue-500 group-hover:text-blue-600' />
+        <TbEdit className='text-lg text-blue-500 group-hover:text-blue-600' />
       </div>
       <div
         onClick={() => {
@@ -33,7 +33,7 @@ const TableAction = ({ handleDeleteEvent, handleEditEvent }: TableActionProps) =
         }}
         className='cursor-pointer relative  px-2 py-1 rounded-md hover:bg-red-200 transition-colors'
       >
-        <TbTrash className='text-red-500 group-hover:text-red-600' />
+        <TbTrash className='text-lg text-red-500 group-hover:text-red-600' />
       </div>
     </div>
   )

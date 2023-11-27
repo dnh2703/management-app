@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import { Avatar, Sidebar } from '~/components'
+import { Avatar, Breadcrumb, Sidebar } from '~/components'
 
 const MainLayout = () => {
   return (
@@ -7,6 +7,7 @@ const MainLayout = () => {
       <Sidebar />
       <div className='p-4 p md:ml-64'>
         <Avatar />
+        <Breadcrumb />
         <Outlet />
       </div>
     </div>

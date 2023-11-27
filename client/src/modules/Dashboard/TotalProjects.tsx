@@ -24,7 +24,7 @@ const TotalProjects = ({ isLoading, projects }: TotalProjectsProps) => {
         <p className='text-zinc-600 text-sm font-medium'>Total projects</p>
         <p className='text-green-600 text-sm pt-6 font-bold'>
           {findMostFrequentElement(ListTechStack)?.name}{' '}
-          {((findMostFrequentElement(ListTechStack)?.times / ListTechStack?.length) * 100).toFixed(2)}%
+          {((findMostFrequentElement(ListTechStack)?.times / ListTechStack?.length) * 100).toFixed(0)}%
         </p>
       </div>
     </div>

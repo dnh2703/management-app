@@ -74,7 +74,7 @@ const EmployeeTable = () => {
             onClick={() => router.navigate(`${location.pathname}/add`)}
           >
             <MdAddCircleOutline className='text-white mr-2 text-lg' />
-            Add member
+            Add employee
           </Button>
         </div>
         <div className='relative overflow-x-auto border border-zinc-200 rounded-lg mb-4'>
