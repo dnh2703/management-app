@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { SubmitHandler, useForm, Controller } from 'react-hook-form'
 import MultiAsyncSelect from 'react-select/async'
 import { toast } from 'react-toastify'
-import { Button, Input, SingleSelect } from '~/components'
+import { Button, Input, SingleSelect, Spinner } from '~/components'
 import { CustomerSchema } from './customer.schema'
 import { CUSTOMER_FORM_VALIDATE } from '~/constants/validation.constants'
 import { MultiSelectOption } from '~/types/multiSelect.types'
@@ -99,7 +99,7 @@ const CustomerEdit = () => {
   return (
     <>
       <h3 className='font-bold text-2xl pb-4'>Edit Customer</h3>
-      <div className='bg-white px-6 pb-8 rounded-lg shadow'>
+      <div className={`bg-white px-6 pb-8 rounded-lg shadow relative ${customerQuery.isLoading && 'animate-pulse'}`}>
         <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-2 gap-x-4 gap-y-4  py-6'>
           <div className='col-span-2 sm:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
@@ -219,6 +219,11 @@ const CustomerEdit = () => {
             </Button>
           </div>
         </form>
+        {customerQuery.isLoading && (
+          <div className='absolute top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2 flex justify-center items-center'>
+            <Spinner size='20' />
+          </div>
+        )}
       </div>
     </>
   )

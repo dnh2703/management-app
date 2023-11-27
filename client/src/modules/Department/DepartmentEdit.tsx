@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import MultiAsyncSelect from 'react-select/async'
-import { Button, Input } from '~/components'
+import { Button, Input, Spinner } from '~/components'
 import { DepartmentSchema } from './department.schema'
 import { MultiSelectOption } from '~/types/multiSelect.types'
 import projectApi from '~/services/modules/project.services'
@@ -116,7 +116,7 @@ const DepartmentEdit = () => {
   return (
     <>
       <h3 className='font-bold text-2xl pb-4'>Edit Department</h3>
-      <div className='bg-white px-6 pb-8 rounded-lg shadow'>
+      <div className={`bg-white px-6 pb-8 rounded-lg shadow relative ${departmentQuery.isLoading && 'animate-pulse'}`}>
         <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-2 gap-x-4 gap-y-4  py-6'>
           <div className='col-span-2'>
             <label className='block mb-2 text-sm font-medium text-gray-900'>
@@ -183,6 +183,11 @@ const DepartmentEdit = () => {
             </Button>
           </div>
         </form>
+        {departmentQuery.isLoading && (
+          <div className='absolute top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2'>
+            <Spinner size='20' />
+          </div>
+        )}
       </div>
     </>
   )

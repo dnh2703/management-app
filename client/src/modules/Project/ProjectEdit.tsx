@@ -1,4 +1,4 @@
-import { Button, Input, InputDatePicker, SingleSelect } from '~/components'
+import { Button, Input, InputDatePicker, SingleSelect, Spinner } from '~/components'
 import AsyncSelect from 'react-select/async'
 import MultipleSelect from 'react-select'
 import techStackApi from '~/services/modules/techStack.services'
@@ -153,7 +153,10 @@ const ProjectEdit = () => {
   return (
     <>
       <h3 className='font-bold text-2xl'>Edit Project </h3>
-      <div className='bg-white px-6 pb-8 mt-4 rounded-lg shadow'>
+
+      <div
+        className={`bg-white px-6 pb-8 mt-4 rounded-lg shadow relative ${projectQuery.isLoading && 'animate-pulse'}`}
+      >
         <h4
           onClick={() => {
             if (owner) {
@@ -166,7 +169,7 @@ const ProjectEdit = () => {
         >
           {owner ? owner.name : 'No owner'}
         </h4>
-        <form action='' className='grid grid-cols-2 gap-x-4 gap-y-4  py-6' onSubmit={handleSubmit(onSubmit)}>
+        <form action='' className='grid grid-cols-2 gap-x-4 gap-y-4  py-6 ' onSubmit={handleSubmit(onSubmit)}>
           <div className=' col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
               Title
@@ -314,6 +317,12 @@ const ProjectEdit = () => {
             </Button>
           </div>
         </form>
+
+        {projectQuery.isLoading && (
+          <div className='absolute top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2 flex justify-center items-center'>
+            <Spinner size='20' />
+          </div>
+        )}
       </div>
     </>
   )
