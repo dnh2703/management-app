@@ -13,6 +13,7 @@ const RegisterForm = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors }
   } = useForm<RegisterSchema>()
 
@@ -95,13 +96,20 @@ const RegisterForm = () => {
           />
           <Input
             className='placeholder-zinc-300 w-full'
-            isError={!!errors.password}
-            errorMessage={errors.password?.message}
+            isError={!!errors.confirm_password}
+            errorMessage={errors.confirm_password?.message}
             disabled={isLoading}
             isShowIconShowPassword={true}
             placeholder='confirm password'
             type='password'
-            {...register('confirm_password', { required: 'Please fill confirm password' })}
+            {...register('confirm_password', {
+              required: 'Please fill confirm password',
+              validate: (value: string) => {
+                if (value !== watch('password')) {
+                  return `Password does not match`
+                }
+              }
+            })}
           />
         </div>
 
