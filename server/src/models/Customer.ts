@@ -27,7 +27,7 @@ const CustomerSchema = new mongoose.Schema<ICustomer>(
 
     status: {
       type: String,
-      enum: ['active', 'no active'],
+      enum: ['active', 'in-active'],
       default: 'active'
     },
     projects: [

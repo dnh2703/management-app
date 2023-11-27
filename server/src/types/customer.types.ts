@@ -6,7 +6,7 @@ interface ICustomer {
   country: string
   company: string
   priority: 'medium' | 'low' | 'high'
-  status: 'active' | 'no active'
+  status: 'active' | 'in-active'
   projects: mongoose.Types.DocumentArray<{
     _id: mongoose.Types.ObjectId
   }>
