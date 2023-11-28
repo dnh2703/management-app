@@ -66,7 +66,6 @@ const ProjectEdit = () => {
       return projectId
         ? projectApi.getSingleProject(projectId).then((res) => {
             const { project } = res.data
-            console.log(project)
             const start_date = moment(project.start_date).format('YYYY-MM-DD')
             const end_date = moment(project.end_date).format('YYYY-MM-DD')
 

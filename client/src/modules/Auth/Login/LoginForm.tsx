@@ -35,7 +35,7 @@ const LoginForm = () => {
       .finally(() => setIsLoading(false))
   }
 
-  const login = useGoogleLogin({
+  const loginGoogle = useGoogleLogin({
     onSuccess: (codeResponse) => {
       setIsLoading(true)
       authApi
@@ -120,7 +120,7 @@ const LoginForm = () => {
              focus-visible:ring-ring disabled:pointer-events-none 
              disabled:opacity-50 border border-zinc-700 bg-transparent 
              shadow-sm hover:bg-zinc-100'
-            onClick={() => login()}
+            onClick={() => loginGoogle()}
           >
             <svg role='img' viewBox='0 0 24 24' className='mr-2 h-4 w-4'>
               <path

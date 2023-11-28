@@ -8,6 +8,7 @@ import { AxiosError } from 'axios'
 import authApi from '~/services/modules/auth.service'
 import { handleAxiosError } from '~/utils/axios'
 import { toast } from 'react-toastify'
+import { handleLoadUser, handleLogInResponse } from '~/libs/auth.libs'
 
 const RegisterForm = () => {
   const {
@@ -39,15 +40,15 @@ const RegisterForm = () => {
       .finally(() => setIsLoading(false))
   }
 
-  const login = useGoogleLogin({
+  const loginGoogle = useGoogleLogin({
     onSuccess: (codeResponse) => {
       setIsLoading(true)
       authApi
         .register({ googleAccessToken: codeResponse.access_token })
         .then((res) => {
-          if (res.status === 201) {
-            toast.success('Register successfully!')
-            navigate('/')
+          if (res.status === 200) {
+            handleLoadUser(res)
+            handleLogInResponse(res)
           }
         })
         .catch((err) => {
@@ -148,7 +149,7 @@ const RegisterForm = () => {
              focus-visible:ring-ring disabled:pointer-events-none 
              disabled:opacity-50 border border-zinc-700 bg-transparent 
              shadow-sm hover:bg-zinc-100'
-            onClick={() => login()}
+            onClick={() => loginGoogle()}
           >
             <svg role='img' viewBox='0 0 24 24' className='mr-2 h-4 w-4'>
               <path

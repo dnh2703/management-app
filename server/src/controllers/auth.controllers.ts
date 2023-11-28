@@ -20,18 +20,58 @@ const register = async (req: Request, res: Response) => {
       throw new CustomAPIError('INVALID_GOOGLE_TOKEN', StatusCodes.BAD_REQUEST, 'Invalid access token!')
     }
 
-    const name = response.data.name
     const email = response.data.email
+    const picture = response.data.picture
+    const name = response.data.name
 
-    const existingUser = await User.findOne({ email })
+    let user = await User.findOne({ email })
 
-    if (existingUser) {
-      throw new CustomAPIError('EMAIL_ALREADY_EXITS', StatusCodes.BAD_REQUEST, 'Email already exits')
+    if (!user) {
+      user = await User.create({ email, name })
     }
 
-    await User.create({ email, name })
+    const payloadJWT = createPayload({
+      role: user.role,
+      email: user.email,
+      user_id: user._id.toString(),
+      name: user.name
+    })
 
-    return res.status(StatusCodes.CREATED).send('Register successful')
+    // create refresh token
+    let refreshToken = ''
+    // check for existing token
+    const existingRefreshToken = await Token.findOne({ user: user._id })
+
+    if (existingRefreshToken) {
+      const { isValid } = existingRefreshToken
+      if (!isValid) {
+        throw new CustomAPIError('INVALID_CREDENTIALS', StatusCodes.UNAUTHORIZED, 'Invalid Credentials')
+      }
+      refreshToken = existingRefreshToken.refreshToken
+      if (isTokenExpired(refreshToken)) {
+        const userAgent = req.headers['user-agent']
+        const ip = req.ip
+        refreshToken = createJWT(payloadJWT, '7d')
+
+        await Token.deleteOne({ _id: existingRefreshToken._id })
+        const userToken = { refreshToken, ip, userAgent, user: user._id }
+        await Token.create(userToken)
+      }
+
+      const accessToken = createJWT(payloadJWT, '12h')
+      res.status(StatusCodes.OK).json({ user: { ...payloadJWT, picture }, refreshToken, accessToken })
+      return
+    }
+
+    const userAgent = req.headers['user-agent']
+    const ip = req.ip
+    const accessToken = createJWT(payloadJWT, '12h')
+    refreshToken = createJWT(payloadJWT, '7d')
+
+    const userToken = { refreshToken, ip, userAgent, user: user._id }
+
+    await Token.create(userToken)
+    return res.status(StatusCodes.OK).json({ user: { ...payloadJWT, picture }, refreshToken, accessToken })
   }
 
   const user = await User.findOne({ email })
@@ -68,11 +108,12 @@ const login = async (req: Request, res: Response) => {
 
     const email = response.data.email
     const picture = response.data.picture
+    const name = response.data.name
 
-    const user = await User.findOne({ email })
+    let user = await User.findOne({ email })
 
     if (!user) {
-      throw new CustomAPIError('EMAIL_INVALID', StatusCodes.BAD_REQUEST, `Email don't already exits`)
+      user = await User.create({ email, name })
     }
 
     const payloadJWT = createPayload({
