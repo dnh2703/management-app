@@ -4,7 +4,6 @@ import MultiAsyncSelect from 'react-select/async'
 import { Button, Input, Spinner } from '~/components'
 import { DepartmentSchema } from './department.schema'
 import { MultiSelectOption } from '~/types/multiSelect.types'
-import projectApi from '~/services/modules/project.services'
 import { IProject } from '~/types/project.types'
 import employeeApi from '~/services/modules/employee.services'
 import { IEmployee } from '~/types/employee.types'
@@ -33,13 +32,10 @@ const DepartmentEdit = () => {
       setIsLoading(true)
       if (departmentId) {
         const employees_id = data.employees.map((item) => item.value)
-        const projects_id = data.projects.map((item) => item.value)
-
-        const res = await departmentApi.updateDepartment(departmentId, { ...data, employees_id, projects_id })
-
+        const res = await departmentApi.updateDepartment(departmentId, { ...data, employees_id })
         if (res.status === 200) {
           toast.success('Success! Department updated.')
-          navigate('/')
+          navigate('/departments')
         }
       }
     } catch (error) {
@@ -55,17 +51,7 @@ const DepartmentEdit = () => {
       return departmentId
         ? departmentApi.getSingleDepartment(departmentId).then((res) => {
             const { department } = res.data
-            console.log(department)
             setValue('name', department.name)
-            setValue(
-              'projects',
-              department.projects.map((item: IProject) => {
-                return {
-                  value: item._id,
-                  label: item.project_id
-                }
-              })
-            )
             setValue(
               'employees',
               department.employees.map((item: IEmployee) => {
@@ -82,21 +68,6 @@ const DepartmentEdit = () => {
     },
     refetchOnWindowFocus: false
   })
-
-  const projectOptions = (_inputValue: string, callback: (options: MultiSelectOption[]) => void) => {
-    projectApi.getAllProjectWithoutDepartment().then((res) => {
-      const result = res.data.ListProjectWithoutDepartment
-      const options: MultiSelectOption[] = [...result].map((item: IProject) => {
-        return {
-          value: `${item._id}`,
-          label: `${item.project_id}`
-        }
-      })
-      setTimeout(() => {
-        callback(options)
-      }, 1000)
-    })
-  }
 
   const employeeOptions = (_inputValue: string, callback: (options: MultiSelectOption[]) => void) => {
     employeeApi.getAllEmployeeWithoutDepartment().then((res) => {
@@ -132,7 +103,7 @@ const DepartmentEdit = () => {
               className='w-full'
             />
           </div>
-          <div className='col-span-2 sm:col-span-1'>
+          <div className='col-span-2'>
             <label className='block mb-2 text-sm font-medium text-gray-900'>Employees</label>
             <Controller
               name='employees'
@@ -149,28 +120,6 @@ const DepartmentEdit = () => {
                   cacheOptions
                   defaultOptions
                   loadOptions={employeeOptions}
-                  isDisabled={departmentQuery.isLoading || isLoading}
-                />
-              )}
-            />
-          </div>
-          <div className='col-span-2 sm:col-span-1'>
-            <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Projects</label>
-            <Controller
-              name='projects'
-              control={control}
-              render={({ field }) => (
-                <MultiAsyncSelect
-                  classNames={{
-                    input: () => '[&_input:focus]:ring-0 border-none',
-                    control: (state) =>
-                      state.isFocused ? 'border-zinc-600 outline-2 outline-zinc-600 shadow-none' : 'border-zinc-400'
-                  }}
-                  {...field}
-                  isMulti
-                  cacheOptions
-                  defaultOptions
-                  loadOptions={projectOptions}
                   isDisabled={departmentQuery.isLoading || isLoading}
                 />
               )}

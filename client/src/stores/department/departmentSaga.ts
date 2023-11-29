@@ -3,6 +3,8 @@ import { call, put, takeEvery } from 'redux-saga/effects'
 import {
   DepartmentQueryAction,
   deleteDepartmentAction,
+  deleteDepartmentErrorAction,
+  deleteDepartmentSuccessAction,
   getAllDepartmentAction,
   getAllDepartmentErrorAction,
   getAllDepartmentSuccessAction
@@ -24,9 +26,9 @@ function* deleteDepartment(action: PayloadAction<{ id: string }>) {
   try {
     const { id } = action.payload
     const res: AxiosResponse = yield call(departmentApi.deleteDepartment, id)
-    yield put(getAllDepartmentSuccessAction(res.data))
+    yield put(deleteDepartmentSuccessAction(res.data))
   } catch (error) {
-    yield put(getAllDepartmentErrorAction())
+    yield put(deleteDepartmentErrorAction())
   }
 }
 

@@ -54,13 +54,13 @@ const updateProject = async (req: Request, res: Response) => {
     {
       title,
       status,
-      department_id,
       priority,
-      employees_id,
       start_date,
       end_date,
-      tech_stacks_id,
       customer_id,
+      employees: employees_id,
+      tech_stacks: tech_stacks_id,
+      department: department_id,
       project_type
     },
     { runValidators: true, new: false }
@@ -71,17 +71,29 @@ const updateProject = async (req: Request, res: Response) => {
   }
 
   if (employees_id && Array.isArray(employees_id) && department_id) {
-    const updatedEmployees = await Employee.updateMany(
-      { _id: { $in: employees_id } },
+    const oldEmployees = await Employee.find({
+      $and: [{ _id: { $in: employees_id }, projects: { $in: updatedProject } }]
+    })
+
+    const oldDepartment = await Department.findOne({
+      $and: [{ _id: department_id, projects: { $in: updatedProject } }]
+    })
+
+    await Employee.updateMany(
+      {
+        $and: [{ _id: { $in: employees_id } }, { _id: { $nin: oldEmployees } }]
+      },
       { $push: { projects: updatedProject } },
       { runValidators: true }
     )
 
-    const updatedDepartment = await Department.updateOne(
-      { _id: department_id },
-      { $push: { projects: updatedProject } },
-      { runValidators: true }
-    )
+    if (!oldDepartment) {
+      await Department.updateOne(
+        { _id: { $in: department_id } },
+        { $push: { projects: updatedProject } },
+        { runValidators: true }
+      )
+    }
     const removedDepartment = updatedProject.department?.toString() != department_id ? department_id : ''
 
     const removedEmployees = updatedProject.employees

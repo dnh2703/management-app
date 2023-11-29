@@ -81,9 +81,8 @@ const CustomerEdit = () => {
       customerApi
         .updateCustomer(customerId, { ...data, projects_id })
         .then((res) => {
-          console.log(res)
           if (res.status == 200) {
-            toast.success('Success !', {
+            toast.success('Success! Customer updated', {
               position: toast.POSITION.TOP_RIGHT
             })
             navigate('/customers')

@@ -8,7 +8,13 @@ import Project from '~/models/Project'
 const createDepartment = async (req: Request, res: Response) => {
   const { name, employees_id, projects_id } = req.body
 
-  const department = await Department.create({
+  const department = await Department.findOne({ name: name })
+
+  if (department) {
+    throw new CustomAPIError('DEPARTMENT_ALREADY_EX', StatusCodes.BAD_REQUEST, `Department already exits`)
+  }
+
+  await Department.create({
     name,
     employees: employees_id,
     projects: projects_id
@@ -18,13 +24,13 @@ const createDepartment = async (req: Request, res: Response) => {
 }
 
 const updateDepartment = async (req: Request, res: Response) => {
-  const { name, employees_id, projects_id } = req.body
+  const { name, employees_id } = req.body
 
   const { id: departmentId } = req.params
 
   const departmentUpdated = await Department.findByIdAndUpdate(
     { _id: departmentId },
-    { name, employees_id, projects_id },
+    { name, employees: employees_id },
     {
       runValidators: true
     }
@@ -34,36 +40,20 @@ const updateDepartment = async (req: Request, res: Response) => {
     throw new CustomAPIError('NOT_FOUND_DEPARTMENT', StatusCodes.NOT_FOUND, `No department with id : ${departmentId}`)
   }
 
-  if (projects_id && Array.isArray(projects_id) && employees_id && Array.isArray(employees_id)) {
+  if (employees_id && Array.isArray(employees_id)) {
     // Update the associated projects with the modified customer
-    const updatedProjects = await Project.updateMany(
-      { _id: { $in: projects_id } },
-      { $set: { department: departmentUpdated._id } },
-      { runValidators: true }
-    )
+
     const updatedEmployees = await Employee.updateMany(
       { _id: { $in: employees_id } },
       { $set: { department: departmentUpdated._id } },
       { runValidators: true }
     )
 
-    const removedProjects = departmentUpdated.projects.filter(
-      (projectId) => !projects_id.includes(projectId.toString())
-    )
-
     const removedEmployees = departmentUpdated.employees.filter(
       (employeeId) => !employees_id.includes(employeeId.toString())
     )
 
-    if (removedProjects.length > 0) {
-      await Project.updateMany(
-        { _id: { $in: removedProjects } },
-        { $unset: { department: '' } },
-        { runValidators: true }
-      )
-    }
-
-    if (removedProjects.length > 0) {
+    if (removedEmployees.length > 0) {
       await Employee.updateMany(
         { _id: { $in: removedEmployees } },
         { $unset: { department: '' } },

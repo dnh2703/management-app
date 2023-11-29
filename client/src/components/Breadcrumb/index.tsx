@@ -19,7 +19,7 @@ const Breadcrumb = () => {
           .map((path, index) => {
             if (index == 0) {
               return (
-                <li className='inline-flex items-center'>
+                <li className='inline-flex items-center' key={index}>
                   <NavLink
                     to={`${path}`}
                     className='inline-flex items-center capitalize text-sm font-medium text-gray-700 hover:text-blue-600'

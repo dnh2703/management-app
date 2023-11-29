@@ -50,7 +50,7 @@ const CustomerForm = () => {
       .then((res) => {
         console.log(res)
         if (res.status == 201) {
-          toast.success('Success !', {
+          toast.success('Success! Customer created', {
             position: toast.POSITION.TOP_RIGHT
           })
           navigate('/customers')

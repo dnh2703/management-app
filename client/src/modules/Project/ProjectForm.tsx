@@ -16,6 +16,7 @@ import { PROJECT_FORM_VALIDATE } from '~/constants/validation.constants'
 import projectApi from '~/services/modules/project.services'
 import { useNavigate } from 'react-router-dom'
 import { handleAxiosError } from '~/utils/axios'
+import { isDateValid } from '~/utils/date'
 
 const ProjectForm = () => {
   const [employeeOptions, setEmployeeOptions] = useState<MultiSelectOption[]>([])
@@ -33,10 +34,11 @@ const ProjectForm = () => {
   const onSubmit: SubmitHandler<ProjectSchema> = async (data) => {
     setIsLoading(true)
     try {
-      const department_id = data.department.value
-      const tech_stacks_id = data.tech_stacks.map((item) => item.value)
-      const employees_id = data.employees.map((item) => item.value)
-
+      const department_id = data.department ? data.department.value : null
+      const tech_stacks_id = data.tech_stacks ? data.tech_stacks.map((item) => item.value) : []
+      const employees_id = data.employees ? data.employees.map((item) => item.value) : []
+      data.start_date = isDateValid(data.start_date) ? data.start_date : ''
+      data.end_date = isDateValid(data.end_date) ? data.end_date : ''
       const res = await projectApi.createProject({
         ...data,
         tech_stacks_id,
@@ -45,7 +47,7 @@ const ProjectForm = () => {
       })
 
       if (res.status === 201) {
-        toast.success('submit successfully')
+        toast.success('Success! Project created')
         navigate('/projects')
       }
     } catch (error) {
@@ -171,14 +173,10 @@ const ProjectForm = () => {
           </div>
 
           <div className=' col-span-1'>
-            <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-              Department
-              <span className='text-red-500 pl-1'>*</span>
-            </label>
+            <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Department</label>
             <Controller
               name='department'
               control={control}
-              rules={PROJECT_FORM_VALIDATE.department}
               render={({ field }) => (
                 <AsyncSelect
                   disabled={isLoading}
@@ -196,14 +194,10 @@ const ProjectForm = () => {
             />
           </div>
           <div className=' col-span-1'>
-            <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-              Technology stack
-              <span className='text-red-500 pl-1'>*</span>
-            </label>
+            <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Technology stack</label>
             <Controller
               name='tech_stacks'
               control={control}
-              rules={PROJECT_FORM_VALIDATE.tech_stack}
               render={({ field }) => (
                 <AsyncSelect
                   disabled={isLoading}
@@ -224,13 +218,11 @@ const ProjectForm = () => {
           <div className=' col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
               Employees
-              <span className='text-red-500 pl-1'>*</span>
               <small className='block text-gray-500'>Please choose department first</small>
             </label>
             <Controller
               name='employees'
               control={control}
-              rules={PROJECT_FORM_VALIDATE.employees}
               render={({ field }) => (
                 <MultipleSelect
                   disabled={isLoading}

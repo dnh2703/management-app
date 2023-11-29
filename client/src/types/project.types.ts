@@ -18,7 +18,7 @@ interface IProjectAPIBody {
   status: 'in progress' | 'canceled' | 'done' | 'pending'
   project_type: string
   priority: string
-  department_id: string
+  department_id: string | null
   employees_id: string[]
   tech_stacks_id: string[]
 }

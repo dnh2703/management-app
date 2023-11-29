@@ -4,8 +4,8 @@ export interface ProjectSchema {
   status: 'in progress' | 'canceled' | 'done' | 'pending'
   priority: string
   project_type: string
-  start_date?: string
-  end_date?: string
+  start_date: string
+  end_date: string
   department: {
     value: string
     label: string

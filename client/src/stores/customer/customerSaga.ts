@@ -3,6 +3,8 @@ import { call, put, takeEvery } from 'redux-saga/effects'
 import {
   CustomerQueryAction,
   deleteCustomerAction,
+  deleteCustomerErrorAction,
+  deleteCustomerSuccessAction,
   getAllCustomerAction,
   getAllCustomerErrorAction,
   getAllCustomerSuccessAction
@@ -24,9 +26,9 @@ function* deleteCustomer(action: PayloadAction<{ id: string }>) {
   try {
     const { id } = action.payload
     const res: AxiosResponse = yield call(customerApi.deleteCustomer, id)
-    yield put(getAllCustomerSuccessAction(res.data))
+    yield put(deleteCustomerSuccessAction(res.data))
   } catch (error) {
-    yield put(getAllCustomerErrorAction())
+    yield put(deleteCustomerErrorAction())
   }
 }
 
