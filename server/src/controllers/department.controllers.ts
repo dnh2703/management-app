@@ -66,9 +66,31 @@ const updateDepartment = async (req: Request, res: Response) => {
 }
 
 const getAllDepartment = async (req: Request, res: Response) => {
-  const ListDepartment = await Department.find().populate('employees')
+  let options = {}
+  const { q } = req.query
 
-  res.status(StatusCodes.OK).json({ ListDepartment })
+  const page: number = parseInt(req.query.page as any) || 0
+  const size: number = parseInt(req.query.size as any) || 5
+
+  if (q) {
+    options = {
+      ...options,
+      name: new RegExp(q.toString(), 'i')
+    }
+  }
+  const ListDepartment = await Department.find(options)
+    .populate('employees')
+    .limit(size)
+    .skip(size * page)
+
+  let totalPage
+  if (Object.keys(options).length) {
+    totalPage = Math.ceil((await Department.find(options)).length / size)
+  } else {
+    totalPage = Math.ceil((await Department.countDocuments()) / size)
+  }
+
+  res.status(StatusCodes.OK).json({ ListDepartment, totalPage })
 }
 
 const getSingleDepartment = async (req: Request, res: Response) => {
@@ -82,7 +104,7 @@ const getSingleDepartment = async (req: Request, res: Response) => {
 const getAllEmployeeInDepartment = async (req: Request, res: Response) => {
   const { id: departmentId } = req.params
 
-  const employees = await Employee.find({ department: departmentId })
+  const employees = await Employee.find({ department: departmentId }).populate('projects')
 
   res.status(StatusCodes.OK).json({ employees })
 }
