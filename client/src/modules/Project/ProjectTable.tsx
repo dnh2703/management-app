@@ -45,7 +45,7 @@ const ProjectTable = () => {
     return projects.map((project, index) => {
       return (
         <tr key={index} className='border-t border-zinc-200 text-zinc-900 hover:bg-zinc-50 transition-colors'>
-          <td className='px-4 py-2 text-sm whitespace-nowrap'>{`PROJECT_${project.project_id}`}</td>
+          <td className='px-4 py-2 text-sm whitespace-nowrap'>{`${project.project_id}`}</td>
           <td className='px-4 py-2 text-sm whitespace-nowrap'>{project.title}</td>
           <td className='px-4 py-2 text-sm whitespace-nowrap'>
             {project.tech_stacks.map((item) => item.name).join(', ')}

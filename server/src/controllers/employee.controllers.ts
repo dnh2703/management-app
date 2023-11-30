@@ -58,7 +58,7 @@ const getAllEmployee = async (req: Request, res: Response) => {
 const getSingleEmployee = async (req: Request, res: Response) => {
   const { id: employeeId } = req.params
 
-  const employee = await Employee.findOne({ _id: employeeId }).populate('tech_stacks')
+  const employee = await Employee.findOne({ _id: employeeId }).populate('tech_stacks').populate('projects')
 
   if (!employee) {
     throw new CustomAPIError('NOT_FOUND_EMPLOYEE', StatusCodes.NOT_FOUND, `No employee with id : ${employeeId}`)
