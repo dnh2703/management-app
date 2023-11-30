@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { MdAddCircleOutline } from 'react-icons/md'
 import { useSearchParams } from 'react-router-dom'
-import { Button, InputSearch, NotFoundTable, Table, TableAction } from '~/components'
+import { Button, InputSearch, NotFoundTable, Pagination, Table, TableAction } from '~/components'
 import SkeletonTable from '~/components/SkeletonTable'
 import { DEPARTMENT_FILED_HEADINGS } from '~/constants/thead.constants'
 import { usePagination } from '~/hooks'
@@ -11,7 +11,7 @@ import { deleteDepartmentAction, getAllDepartmentAction } from '~/stores/departm
 import { useAppDispatch, useAppSelector } from '~/stores/hook'
 
 const DepartmentTable = () => {
-  const { departments, isDeleted, isLoading } = useAppSelector((state) => state.department)
+  const { departments, totalPage, isDeleted, isLoading } = useAppSelector((state) => state.department)
   const [searchParams] = useSearchParams()
   const { page, size } = usePagination()
 
@@ -100,6 +100,7 @@ const DepartmentTable = () => {
             <tbody>{renderTable()}</tbody>
           </Table>
         </div>
+        <Pagination totalPage={totalPage} page={page} size={size} />
       </div>
     </>
   )

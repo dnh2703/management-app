@@ -40,9 +40,9 @@ const ProjectEdit = () => {
   const onSubmit: SubmitHandler<ProjectSchema> = async (data) => {
     setIsLoading(true)
     try {
-      const department_id = data.department.value
-      const tech_stacks_id = data.tech_stacks.map((item) => item.value)
-      const employees_id = data.employees.map((item) => item.value)
+      const department_id = data.department ? data.department.value : null
+      const tech_stacks_id = data.tech_stacks ? data.tech_stacks.map((item) => item.value) : []
+      const employees_id = data.employees ? data.employees.map((item) => item.value) : []
       data.start_date = isDateValid(data.start_date) ? data.start_date : ''
       data.end_date = isDateValid(data.end_date) ? data.end_date : ''
       const res = await projectApi.updateProject(projectId as string, {
@@ -120,7 +120,7 @@ const ProjectEdit = () => {
     })
   }
   const departmentOptions = (_inputValue: string, callback: (options: MultiSelectOption[]) => void) => {
-    departmentApi.getAllDepartment().then((res) => {
+    departmentApi.getAllDepartment('', '', '9999').then((res) => {
       const result = res.data.ListDepartment
       const options: MultiSelectOption[] = [...result].map((item: IDepartment) => {
         return {
@@ -142,7 +142,11 @@ const ProjectEdit = () => {
           const options: MultiSelectOption[] = [...result].map((item: IEmployee) => {
             return {
               value: `${item._id}`,
-              label: `${item.full_name}`
+              label: `${item.full_name} - ${
+                item.projects.filter((item) => item.status == 'in progress').length > 0
+                  ? `Occupied (${item.projects.filter((item) => item.status == 'in progress').length})`
+                  : 'Free'
+              }`
             }
           })
           setEmployeeOptions(options)

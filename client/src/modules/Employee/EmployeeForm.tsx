@@ -142,7 +142,7 @@ const EmployeeForm = () => {
               disabled={isLoading}
               isError={!!errors.phone_number}
               errorMessage={errors.phone_number?.message}
-              {...register('phone_number')}
+              {...register('phone_number', EMPLOYEE_FORM_VALIDATE.phone_number)}
               className='w-full'
             />
           </div>
