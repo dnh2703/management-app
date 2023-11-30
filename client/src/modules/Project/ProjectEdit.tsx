@@ -344,7 +344,7 @@ const ProjectEdit = () => {
                 <span className=''>{owner.country}</span>
               </Button>
             ) : (
-              <Button className='bg-gray-50'> No owner </Button>
+              <Button className='bg-gray-50 cursor-default'> No owner </Button>
             )}
           </div>
         )}
