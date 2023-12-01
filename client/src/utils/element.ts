@@ -1,6 +1,6 @@
 const findMostFrequentElement = (arr: string[]) => {
   if (arr.length == 0) {
-    return {}
+    return { name: '', times: 0 }
   }
   const occurrences: Record<string, number> = arr.reduce((acc: Record<string, number>, curr) => {
     acc[curr] = acc[curr] ? ++acc[curr] : (acc[curr] = 1)
