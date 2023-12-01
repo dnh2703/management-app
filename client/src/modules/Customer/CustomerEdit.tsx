@@ -100,7 +100,7 @@ const CustomerEdit = () => {
       <h3 className='font-bold text-2xl pb-4'>Edit Customer</h3>
       <div className={`bg-white px-6 pb-8 rounded-lg shadow relative ${customerQuery.isLoading && 'animate-pulse'}`}>
         <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-2 gap-x-4 gap-y-4  py-6'>
-          <div className='col-span-2 sm:col-span-1'>
+          <div className='col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
               Name
               <span className='text-red-500 pl-1'>*</span>
@@ -114,7 +114,7 @@ const CustomerEdit = () => {
               className='w-full'
             />
           </div>
-          <div className='col-span-2 sm:col-span-1'>
+          <div className='col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
               Company
               <span className='text-red-500 pl-1'>*</span>
@@ -128,7 +128,7 @@ const CustomerEdit = () => {
               className='w-full'
             />
           </div>
-          <div className='col-span-2 sm:col-span-1'>
+          <div className='col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
               Country
               <span className='text-red-500 pl-1'>*</span>
@@ -142,7 +142,7 @@ const CustomerEdit = () => {
               className='w-full'
             />
           </div>
-          <div className='col-span-2 sm:col-span-1'>
+          <div className='col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
               Location
               <span className='text-red-500 pl-1'>*</span>
@@ -157,7 +157,7 @@ const CustomerEdit = () => {
             />
           </div>
 
-          <div className='col-span-2 sm:col-span-1'>
+          <div className='col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
               Status
               <span className='text-red-500 pl-1'>*</span>
@@ -172,7 +172,7 @@ const CustomerEdit = () => {
             />
           </div>
 
-          <div className='col-span-2 sm:col-span-1'>
+          <div className='col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
               Priority
               <span className='text-red-500 pl-1'>*</span>
@@ -186,7 +186,7 @@ const CustomerEdit = () => {
               options={CUSTOMER_PRIORITY}
             />
           </div>
-          <div className='col-span-2 sm:col-span-1'>
+          <div className='col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Projects</label>
             <Controller
               name='projects'

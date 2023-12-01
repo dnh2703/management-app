@@ -174,7 +174,7 @@ const ProjectEdit = () => {
         </div>
 
         <form action='' className='grid grid-cols-2 gap-x-4 gap-y-4  py-6 ' onSubmit={handleSubmit(onSubmit)}>
-          <div className=' col-span-1'>
+          <div className=' col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
               Title
               <span className='text-red-500 pl-1'>*</span>
@@ -187,7 +187,7 @@ const ProjectEdit = () => {
               className='w-full'
             />
           </div>
-          <div className=' col-span-1'>
+          <div className=' col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
               Status
               <span className='text-red-500 pl-1'>*</span>
@@ -200,7 +200,7 @@ const ProjectEdit = () => {
             />
           </div>
 
-          <div className=' col-span-1'>
+          <div className=' col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
               Project type
               <span className='text-red-500 pl-1'>*</span>
@@ -213,7 +213,7 @@ const ProjectEdit = () => {
             />
           </div>
 
-          <div className=' col-span-1'>
+          <div className=' col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
               Priority
               <span className='text-red-500 pl-1'>*</span>
@@ -226,16 +226,16 @@ const ProjectEdit = () => {
             />
           </div>
 
-          <div className='col-span-2 sm:col-span-1'>
+          <div className='col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Start date</label>
             <InputDatePicker {...register('start_date')} disabled={projectQuery.isLoading || isLoading} />
           </div>
-          <div className='col-span-2 sm:col-span-1'>
+          <div className='col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>End date</label>
             <InputDatePicker {...register('end_date')} disabled={projectQuery.isLoading || isLoading} />
           </div>
 
-          <div className=' col-span-1'>
+          <div className='col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Department</label>
             <Controller
               name='department'
@@ -256,7 +256,7 @@ const ProjectEdit = () => {
               )}
             />
           </div>
-          <div className=' col-span-1'>
+          <div className=' col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Technology stack</label>
             <Controller
               name='tech_stacks'
@@ -278,7 +278,7 @@ const ProjectEdit = () => {
               )}
             />
           </div>
-          <div className=' col-span-1'>
+          <div className='col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
               Employees
               <small className='block text-gray-500'>Please choose department first</small>

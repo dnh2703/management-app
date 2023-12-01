@@ -111,7 +111,7 @@ const EmployeeEdit = () => {
         </div>
         <h3 className='font-bold text-xl pb-2'>Profile</h3>
         <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-2 gap-x-4 gap-y-4  pb-6'>
-          <div className='col-span-2 sm:col-span-1'>
+          <div className='col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
               First name
               <span className='text-red-500 pl-1'>*</span>
@@ -125,7 +125,7 @@ const EmployeeEdit = () => {
               className='w-full'
             />
           </div>
-          <div className='col-span-2 sm:col-span-1'>
+          <div className='col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
               Last name
               <span className='text-red-500 pl-1'>*</span>
@@ -140,7 +140,7 @@ const EmployeeEdit = () => {
             />
           </div>
 
-          <div className='col-span-2 sm:col-span-1'>
+          <div className='col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
               Gender
               <span className='text-red-500 pl-1'>*</span>
@@ -155,7 +155,7 @@ const EmployeeEdit = () => {
             />
           </div>
 
-          <div className='col-span-2 sm:col-span-1'>
+          <div className='col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
               Experience
               <span className='text-red-500 pl-1'>*</span>
@@ -170,14 +170,14 @@ const EmployeeEdit = () => {
             />
           </div>
 
-          <div className='col-span-2 sm:col-span-1'>
+          <div className='col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
               Birthday
               <span className='text-red-500 pl-1'>*</span>
             </label>
             <InputDatePicker {...register('birthday')} disabled={isLoading || employeeQuery.isLoading} />
           </div>
-          <div className='col-span-2 sm:col-span-1'>
+          <div className='col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
               Phone number
               <span className='text-red-500 pl-1'>*</span>
@@ -190,7 +190,7 @@ const EmployeeEdit = () => {
               className='w-full'
             />
           </div>
-          <div className='col-span-2 sm:col-span-1'>
+          <div className='col-span-2 md:col-span-1'>
             <label className='block mb-2 text-sm font-medium text-gray-900'>Technology stack</label>
             <Controller
               name='tech_stacks'
