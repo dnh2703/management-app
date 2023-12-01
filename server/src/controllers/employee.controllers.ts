@@ -8,10 +8,14 @@ import CustomAPIError from '~/errors/custom-api'
 const createEmployee = async (req: Request, res: Response) => {
   const { first_name, last_name, phone_number, gender, experience, phone, birthday, department_id, tech_stacks_id } =
     req.body
-  console.log(birthday)
+
+  const latestEmployee = await Employee.find().sort({ _id: -1 }).limit(1)
+  const employee_id = `${latestEmployee[0].employee_id + 1}`
+
   const employee = await Employee.create({
     first_name,
     last_name,
+    employee_id,
     phone,
     gender,
     phone_number,
@@ -29,7 +33,7 @@ const getAllEmployee = async (req: Request, res: Response) => {
 
   const { q } = req.query
 
-  const page: number = parseInt(req.query.page as any) || 0
+  const page: number = parseInt(req.query.page as any) || 1
   const size: number = parseInt(req.query.size as any) || 5
 
   if (q) {
@@ -43,7 +47,7 @@ const getAllEmployee = async (req: Request, res: Response) => {
     .populate('tech_stacks')
     .populate({ path: 'projects', select: 'status' })
     .limit(size)
-    .skip(size * page)
+    .skip(size * (page - 1))
 
   let totalPage
   if (Object.keys(options).length) {
@@ -58,7 +62,7 @@ const getAllEmployee = async (req: Request, res: Response) => {
 const getSingleEmployee = async (req: Request, res: Response) => {
   const { id: employeeId } = req.params
 
-  const employee = await Employee.findOne({ _id: employeeId }).populate('tech_stacks').populate('projects')
+  const employee = await Employee.findOne({ employee_id: employeeId }).populate('tech_stacks').populate('projects')
 
   if (!employee) {
     throw new CustomAPIError('NOT_FOUND_EMPLOYEE', StatusCodes.NOT_FOUND, `No employee with id : ${employeeId}`)
@@ -78,8 +82,8 @@ const updateEmployee = async (req: Request, res: Response) => {
 
   const { first_name, last_name, birthday, gender, experience, tech_stacks_id, phone_number } = req.body
 
-  const employee = await Employee.findByIdAndUpdate(
-    { _id: employeeId },
+  const employee = await Employee.findOneAndUpdate(
+    { employee_id: employeeId },
     { first_name, last_name, birthday, gender, experience, phone_number, tech_stacks: tech_stacks_id },
     { runValidators: true }
   )
@@ -94,7 +98,7 @@ const updateEmployee = async (req: Request, res: Response) => {
 const deleteEmployee = async (req: Request, res: Response) => {
   const { id: employeeId } = req.params
 
-  const employee = await Employee.findByIdAndDelete({ _id: employeeId })
+  const employee = await Employee.findOneAndDelete({ employee_id: employeeId })
 
   if (!employee) {
     throw new CustomAPIError('NOT_FOUND_EMPLOYEE', StatusCodes.NOT_FOUND, `No employee with id : ${employeeId}`)

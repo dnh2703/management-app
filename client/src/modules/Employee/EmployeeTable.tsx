@@ -47,10 +47,10 @@ const EmployeeTable = () => {
           <td className='px-4 py-2'>
             <TableAction
               handleDeleteEvent={() => {
-                dispatch(deleteEmployeeAction({ id: employee._id }))
+                dispatch(deleteEmployeeAction({ id: employee.employee_id }))
               }}
               handleEditEvent={() => {
-                router.navigate(`${location.pathname}/${employee._id}`)
+                router.navigate(`${location.pathname}/${employee.employee_id}`)
               }}
             />
           </td>

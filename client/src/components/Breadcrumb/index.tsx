@@ -16,7 +16,7 @@ const Breadcrumb = () => {
         {location.pathname
           .split('/')
           .slice(1)
-          .map((path, index) => {
+          .map((path, index, arr) => {
             if (index == 0) {
               return (
                 <li className='inline-flex items-center' key={index}>
@@ -35,6 +35,31 @@ const Breadcrumb = () => {
                     </svg>
                     {path}
                   </NavLink>
+                </li>
+              )
+            }
+
+            if (index == arr.length - 1) {
+              return (
+                <li key={index}>
+                  <div className='flex items-center'>
+                    <svg
+                      className='rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 '
+                      aria-hidden='true'
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 6 10'
+                    >
+                      <path
+                        stroke='currentColor'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='m1 9 4-4-4-4'
+                      />
+                    </svg>
+                    <a className='ms-1 cursor-default text-sm capitalize font-medium text-gray-700 md:ms-2'>{path}</a>
+                  </div>
                 </li>
               )
             }

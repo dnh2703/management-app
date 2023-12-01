@@ -6,6 +6,7 @@ interface IEmployee {
   _id: string
   first_name: string
   last_name: string
+  employee_id: number
   full_name: string
   phone_number: string
   gender: 'male' | 'female'

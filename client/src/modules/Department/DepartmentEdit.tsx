@@ -14,7 +14,7 @@ import { handleAxiosError } from '~/utils/axios'
 import { toast } from 'react-toastify'
 
 const DepartmentEdit = () => {
-  const { departmentId } = useParams()
+  const { departmentName } = useParams()
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
@@ -29,9 +29,9 @@ const DepartmentEdit = () => {
   const onSubmit: SubmitHandler<DepartmentSchema> = async (data) => {
     try {
       setIsLoading(true)
-      if (departmentId) {
+      if (departmentName) {
         const employees_id = data.employees.map((item) => item.value)
-        const res = await departmentApi.updateDepartment(departmentId, { ...data, employees_id })
+        const res = await departmentApi.updateDepartment(departmentName, { ...data, employees_id })
         if (res.status === 200) {
           toast.success('Success! Department updated.')
           navigate('/departments')
@@ -45,10 +45,10 @@ const DepartmentEdit = () => {
   }
 
   const departmentQuery = useQuery({
-    queryKey: ['product', departmentId],
+    queryKey: ['product', departmentName],
     queryFn: () => {
-      return departmentId
-        ? departmentApi.getSingleDepartment(departmentId).then((res) => {
+      return departmentName
+        ? departmentApi.getSingleDepartment(departmentName).then((res) => {
             const { department } = res.data
             setValue('name', department.name)
             setValue(

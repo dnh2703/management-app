@@ -7,13 +7,25 @@ import Project from '~/models/Project'
 const createCustomer = async (req: Request, res: Response) => {
   const { name, location, country, priority, status, company, projects_id } = req.body
 
+  const latestCustomer = await Customer.find().sort({ _id: -1 }).limit(1)
+  const customer_id = `${latestCustomer[0].customer_id + 1}`
+
   const projects = await Project.find({ _id: { $in: projects_id } })
 
   if (projects.length != projects_id.length) {
     throw new CustomAPIError('PROJECT_ID_ERROR', StatusCodes.BAD_REQUEST, 'Project id error')
   }
 
-  const customer = await Customer.create({ name, location, company, country, priority, status, projects: projects_id })
+  const customer = await Customer.create({
+    name,
+    customer_id,
+    location,
+    company,
+    country,
+    priority,
+    status,
+    projects: projects_id
+  })
 
   await Project.updateMany({ _id: { $in: projects_id } }, { $set: { customer: customer } }, { runValidators: true })
 
@@ -23,7 +35,7 @@ const createCustomer = async (req: Request, res: Response) => {
 const getSingleCustomer = async (req: Request, res: Response) => {
   const { id: customerId } = req.params
 
-  const customer = await Customer.findOne({ _id: customerId }).populate('projects')
+  const customer = await Customer.findOne({ customer_id: customerId }).populate('projects')
 
   if (!customer) {
     throw new CustomAPIError('NOT_FOUND_CUSTOMER', StatusCodes.NOT_FOUND, `No customer with id : ${customerId}`)
@@ -37,7 +49,7 @@ const getAllCustomer = async (req: Request, res: Response) => {
 
   const { q } = req.query
 
-  const page: number = parseInt(req.query.page as any) || 0
+  const page: number = parseInt(req.query.page as any) || 1
   const size: number = parseInt(req.query.size as any) || 5
 
   if (q) {
@@ -49,7 +61,7 @@ const getAllCustomer = async (req: Request, res: Response) => {
 
   const ListCustomer = await Customer.find(options)
     .limit(size)
-    .skip(size * page)
+    .skip(size * (page - 1))
 
   let totalPage
   if (Object.keys(options).length) {
@@ -65,7 +77,7 @@ const updateCustomer = async (req: Request, res: Response) => {
   const { name, location, status, priority, company, projects_id, country } = req.body
 
   const updatedCustomer = await Customer.findOneAndUpdate(
-    { _id: customerId },
+    { customer_id: customerId },
     {
       name,
       location,
@@ -105,7 +117,7 @@ const updateCustomer = async (req: Request, res: Response) => {
 const deleteCustomer = async (req: Request, res: Response) => {
   const { id: customerId } = req.params
 
-  const customer = await Customer.findOneAndDelete({ _id: customerId })
+  const customer = await Customer.findOneAndDelete({ customer_id: customerId })
 
   if (!customer) {
     throw new CustomAPIError('NOT_FOUND_CUSTOMER', StatusCodes.NOT_FOUND, `No customer with id ${customerId}`)

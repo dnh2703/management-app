@@ -49,8 +49,8 @@ const updateProject = async (req: Request, res: Response) => {
   const { id: projectId } = req.params
 
   // findByIdAndUpdate will get data before update, if you set new equal false. Nếu không set thì mặc định giá trị của new cũng là false
-  const updatedProject = await Project.findByIdAndUpdate(
-    { _id: projectId },
+  const updatedProject = await Project.findOneAndUpdate(
+    { project_id: projectId },
     {
       title,
       status,
@@ -121,7 +121,7 @@ const getAllProject = async (req: Request, res: Response) => {
 
   const { q, status } = req.query
 
-  const page: number = parseInt(req.query.page as any) || 0
+  const page: number = parseInt(req.query.page as any) || 1
   const size: number = parseInt(req.query.size as any) || 5
 
   if (q) {
@@ -141,7 +141,7 @@ const getAllProject = async (req: Request, res: Response) => {
   const ListProject = await Project.find(options)
     .populate('tech_stacks')
     .limit(size)
-    .skip(size * page)
+    .skip(size * (page - 1))
 
   let totalPage
   if (Object.keys(options).length) {
@@ -155,7 +155,7 @@ const getAllProject = async (req: Request, res: Response) => {
 const getSingleProject = async (req: Request, res: Response) => {
   const { id: projectId } = req.params
 
-  const project = await Project.findOne({ _id: projectId })
+  const project = await Project.findOne({ project_id: projectId })
     .populate('tech_stacks')
     .populate('department')
     .populate('customer')
@@ -183,7 +183,7 @@ const getAllProjectWithoutDepartment = async (req: Request, res: Response) => {
 const deleteProject = async (req: Request, res: Response) => {
   const { id: projectId } = req.params
 
-  const project = await Project.findOneAndDelete({ _id: projectId })
+  const project = await Project.findOneAndDelete({ project_id: projectId })
 
   if (!project) {
     throw new CustomAPIError('NOT_FOUND_PROJECT', StatusCodes.NOT_FOUND, `No project with id : ${projectId}`)

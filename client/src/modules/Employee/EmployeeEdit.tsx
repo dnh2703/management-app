@@ -22,7 +22,7 @@ import { router } from '~/main'
 const EmployeeEdit = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [projects, setProjects] = useState<IProject[]>([])
-  const [currentTab, setCurrentTab] = useState('profile')
+
   const navigate = useNavigate()
 
   const {
@@ -86,7 +86,7 @@ const EmployeeEdit = () => {
 
     if (employeeId) {
       employeeApi
-        .updateEmployee(employeeId, { ...data, tech_stacks_id: data.tech_stacks.map((tech) => tech.value) })
+        .updateEmployee(parseInt(employeeId), { ...data, tech_stacks_id: data.tech_stacks.map((tech) => tech.value) })
         .then((res) => {
           if (res.status == 200) {
             toast.success('Success! Employee updated', {
@@ -104,155 +104,127 @@ const EmployeeEdit = () => {
 
   return (
     <>
-      <div className='text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700'>
-        <ul className='flex flex-wrap -mb-px'>
-          <li className='me-2'>
-            <a
-              href='#'
-              className={`inline-block p-4 transition-all ${
-                currentTab == 'profile'
-                  ? 'text-blue-600 border-b-2 border-blue-600 rounded-t-lg dark:text-blue-500 dark:border-blue-500'
-                  : 'border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'
-              }`}
-              aria-current='page'
-              onClick={() => setCurrentTab('profile')}
-            >
-              Profile
-            </a>
-          </li>
-          <li className='me-2'>
-            <a
-              href='#'
-              className={`inline-block p-4 transition-all ${
-                currentTab == 'tasks'
-                  ? 'text-blue-600 border-b-2 border-blue-600 rounded-t-lg dark:text-blue-500 dark:border-blue-500'
-                  : 'border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'
-              }`}
-              onClick={() => setCurrentTab('tasks')}
-            >
-              Tasks
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div className={`bg-white px-6 pb-8 rounded-b-lg shadow relative ${employeeQuery.isLoading && 'animate-pulse'}`}>
-        {currentTab == 'profile' ? (
-          <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-2 gap-x-4 gap-y-4  py-6'>
-            <div className='col-span-2 sm:col-span-1'>
-              <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                First name
-                <span className='text-red-500 pl-1'>*</span>
-              </label>
-              <Input
-                disabled={isLoading || employeeQuery.isLoading}
-                isError={!!errors.first_name}
-                errorMessage={errors.first_name?.message}
-                type='text'
-                {...register('first_name', EMPLOYEE_FORM_VALIDATE.first_name)}
-                className='w-full'
-              />
-            </div>
-            <div className='col-span-2 sm:col-span-1'>
-              <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                Last name
-                <span className='text-red-500 pl-1'>*</span>
-              </label>
-              <Input
-                disabled={isLoading || employeeQuery.isLoading}
-                isError={!!errors.last_name}
-                errorMessage={errors.last_name?.message}
-                type='text'
-                {...register('last_name', EMPLOYEE_FORM_VALIDATE.last_name)}
-                className='w-full'
-              />
-            </div>
-
-            <div className='col-span-2 sm:col-span-1'>
-              <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                Gender
-                <span className='text-red-500 pl-1'>*</span>
-              </label>
-              <SingleSelect
-                disabled={isLoading || employeeQuery.isLoading}
-                isError={!!errors.gender}
-                errorMessage={errors.gender?.message}
-                {...register('gender', EMPLOYEE_FORM_VALIDATE.gender)}
-                className='w-full'
-                options={EMPLOYEE_GENDER}
-              />
-            </div>
-
-            <div className='col-span-2 sm:col-span-1'>
-              <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                Experience
-                <span className='text-red-500 pl-1'>*</span>
-              </label>
-              <SingleSelect
-                disabled={isLoading || employeeQuery.isLoading}
-                isError={!!errors.experience}
-                errorMessage={errors.experience?.message}
-                {...register('experience', EMPLOYEE_FORM_VALIDATE.experience)}
-                className='w-full'
-                options={EMPLOYEE_EXPERIENCE}
-              />
-            </div>
-
-            <div className='col-span-2 sm:col-span-1'>
-              <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                Birthday
-                <span className='text-red-500 pl-1'>*</span>
-              </label>
-              <InputDatePicker {...register('birthday')} disabled={isLoading || employeeQuery.isLoading} />
-            </div>
-            <div className='col-span-2 sm:col-span-1'>
-              <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                Phone number
-                <span className='text-red-500 pl-1'>*</span>
-              </label>
-              <Input
-                disabled={isLoading || employeeQuery.isLoading}
-                isError={!!errors.phone_number}
-                errorMessage={errors.phone_number?.message}
-                {...register('phone_number')}
-                className='w-full'
-              />
-            </div>
-            <div className='col-span-2 sm:col-span-1'>
-              <label className='block mb-2 text-sm font-medium text-gray-900'>Technology stack</label>
-              <Controller
-                name='tech_stacks'
-                control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <MultiAsyncSelect
-                    classNames={{
-                      input: () => '[&_input:focus]:ring-0 border-none',
-                      control: (state) =>
-                        state.isFocused ? 'border-zinc-600 outline-2 outline-zinc-600 shadow-none' : 'border-zinc-400'
-                    }}
-                    {...field}
-                    isMulti
-                    cacheOptions
-                    defaultOptions
-                    isDisabled={isLoading || employeeQuery.isLoading}
-                    loadOptions={techStackOptions}
-                  />
-                )}
-              />
-            </div>
-            <div className='col-span-2'>
-              <Button
-                disabled={isLoading || employeeQuery.isLoading}
-                type='submit'
-                className=' bg-black text-white hover:opacity-80'
-              >
-                {isLoading || employeeQuery.isLoading ? 'Loading ...' : 'Save changes'}
-              </Button>
-            </div>
-          </form>
-        ) : (
+      <h3 className='font-bold text-2xl pb-4'>Edit Customer</h3>
+      <div className={`bg-white px-6 pb-8 rounded-lg shadow relative ${employeeQuery.isLoading && 'animate-pulse'}`}>
+        <div className='col-span-2 pt-6 pb-5'>
           <EmployeeProjects projects={projects} />
-        )}
+        </div>
+        <h3 className='font-bold text-xl pb-2'>Profile</h3>
+        <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-2 gap-x-4 gap-y-4  pb-6'>
+          <div className='col-span-2 sm:col-span-1'>
+            <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+              First name
+              <span className='text-red-500 pl-1'>*</span>
+            </label>
+            <Input
+              disabled={isLoading || employeeQuery.isLoading}
+              isError={!!errors.first_name}
+              errorMessage={errors.first_name?.message}
+              type='text'
+              {...register('first_name', EMPLOYEE_FORM_VALIDATE.first_name)}
+              className='w-full'
+            />
+          </div>
+          <div className='col-span-2 sm:col-span-1'>
+            <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+              Last name
+              <span className='text-red-500 pl-1'>*</span>
+            </label>
+            <Input
+              disabled={isLoading || employeeQuery.isLoading}
+              isError={!!errors.last_name}
+              errorMessage={errors.last_name?.message}
+              type='text'
+              {...register('last_name', EMPLOYEE_FORM_VALIDATE.last_name)}
+              className='w-full'
+            />
+          </div>
+
+          <div className='col-span-2 sm:col-span-1'>
+            <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+              Gender
+              <span className='text-red-500 pl-1'>*</span>
+            </label>
+            <SingleSelect
+              disabled={isLoading || employeeQuery.isLoading}
+              isError={!!errors.gender}
+              errorMessage={errors.gender?.message}
+              {...register('gender', EMPLOYEE_FORM_VALIDATE.gender)}
+              className='w-full'
+              options={EMPLOYEE_GENDER}
+            />
+          </div>
+
+          <div className='col-span-2 sm:col-span-1'>
+            <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+              Experience
+              <span className='text-red-500 pl-1'>*</span>
+            </label>
+            <SingleSelect
+              disabled={isLoading || employeeQuery.isLoading}
+              isError={!!errors.experience}
+              errorMessage={errors.experience?.message}
+              {...register('experience', EMPLOYEE_FORM_VALIDATE.experience)}
+              className='w-full'
+              options={EMPLOYEE_EXPERIENCE}
+            />
+          </div>
+
+          <div className='col-span-2 sm:col-span-1'>
+            <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+              Birthday
+              <span className='text-red-500 pl-1'>*</span>
+            </label>
+            <InputDatePicker {...register('birthday')} disabled={isLoading || employeeQuery.isLoading} />
+          </div>
+          <div className='col-span-2 sm:col-span-1'>
+            <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+              Phone number
+              <span className='text-red-500 pl-1'>*</span>
+            </label>
+            <Input
+              disabled={isLoading || employeeQuery.isLoading}
+              isError={!!errors.phone_number}
+              errorMessage={errors.phone_number?.message}
+              {...register('phone_number')}
+              className='w-full'
+            />
+          </div>
+          <div className='col-span-2 sm:col-span-1'>
+            <label className='block mb-2 text-sm font-medium text-gray-900'>Technology stack</label>
+            <Controller
+              name='tech_stacks'
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <MultiAsyncSelect
+                  classNames={{
+                    input: () => '[&_input:focus]:ring-0 border-none',
+                    control: (state) =>
+                      state.isFocused ? 'border-zinc-600 outline-2 outline-zinc-600 shadow-none' : 'border-zinc-400'
+                  }}
+                  {...field}
+                  isMulti
+                  cacheOptions
+                  defaultOptions
+                  isDisabled={isLoading || employeeQuery.isLoading}
+                  loadOptions={techStackOptions}
+                />
+              )}
+            />
+          </div>
+
+          <div className='col-span-2'>
+            <Button
+              disabled={isLoading || employeeQuery.isLoading}
+              type='submit'
+              className=' bg-black text-white hover:opacity-80'
+            >
+              {isLoading || employeeQuery.isLoading ? 'Loading ...' : 'Save changes'}
+            </Button>
+          </div>
+        </form>
+
         {employeeQuery.isLoading && (
           <div className='absolute top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2 flex justify-center items-center'>
             <Spinner size='20' />
@@ -265,9 +237,9 @@ const EmployeeEdit = () => {
 
 const EmployeeProjects = ({ projects }: { projects: IProject[] }) => {
   return (
-    <div className='grid grid-cols-2 gap-x-4 gap-y-4  py-6'>
+    <div className='grid grid-cols-2 gap-x-4 gap-y-4'>
       <div className='lg:col-span-1 col-span-2'>
-        <h3 className=' font-bold'>Completed projects</h3>
+        <h3 className=' font-bold text-xl'>Completed projects</h3>
 
         <div className='flex flex-wrap gap-2 pt-2'>
           {projects.filter((project) => project.status == 'done').length > 0 ? (
@@ -277,7 +249,7 @@ const EmployeeProjects = ({ projects }: { projects: IProject[] }) => {
                 return (
                   <div
                     className={`inline-flex cursor-pointer items-center justify-center gap-1 rounded-full px-1.5 py-1 text-green-500 bg-green-200`}
-                    onClick={() => router.navigate(`/projects/${item._id}`)}
+                    onClick={() => router.navigate(`/projects/${item.project_id}`)}
                   >
                     <HiOutlineCheckCircle />
                     <span className='capitalize text-sm mr-2 font-medium'>{item.project_id}</span>
@@ -295,7 +267,7 @@ const EmployeeProjects = ({ projects }: { projects: IProject[] }) => {
         </div>
       </div>
       <div className='lg:col-span-1 col-span-2'>
-        <h3 className=' font-bold'>Ongoing projects</h3>
+        <h3 className=' font-bold text-xl'>Ongoing projects</h3>
         <div className='flex flex-wrap gap-2 pt-2'>
           {projects.filter((project) => project.status == 'in progress').length > 0 ? (
             projects
@@ -304,7 +276,7 @@ const EmployeeProjects = ({ projects }: { projects: IProject[] }) => {
                 return (
                   <div
                     className={`inline-flex cursor-pointer items-center justify-center gap-1 rounded-full px-1.5 py-1 text-blue-500 bg-blue-200`}
-                    onClick={() => router.navigate(`/projects/${item._id}`)}
+                    onClick={() => router.navigate(`/projects/${item.project_id}`)}
                   >
                     <HiOutlineClock />
                     <span className='capitalize text-sm mr-2 font-medium'>{item.project_id}</span>

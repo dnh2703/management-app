@@ -21,7 +21,6 @@ const CustomerForm = () => {
     register,
     handleSubmit,
     control,
-    getValues,
     formState: { errors }
   } = useForm<CustomerSchema>()
 
@@ -43,7 +42,7 @@ const CustomerForm = () => {
   const onSubmit: SubmitHandler<CustomerSchema> = (data) => {
     setIsLoading(true)
 
-    const projects_id = getValues('projects').map((item) => item.value)
+    const projects_id = data.projects ? data.projects.map((item) => item.value) : []
 
     customerApi
       .createCustomer({ ...data, projects_id })
@@ -158,7 +157,6 @@ const CustomerForm = () => {
             <Controller
               name='projects'
               control={control}
-              rules={{ required: true }}
               render={({ field }) => (
                 <MultiAsyncSelect
                   classNames={{

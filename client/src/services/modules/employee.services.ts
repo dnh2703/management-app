@@ -14,10 +14,10 @@ const employeeApi = {
   createEmployee: (data: IEmployeeAPIBody) => {
     return axiosPrivate.post(`employee`, data)
   },
-  updateEmployee: (id: string, data: IEmployeeAPIBody) => {
+  updateEmployee: (id: number, data: IEmployeeAPIBody) => {
     return axiosPrivate.patch(`employee/${id}`, data)
   },
-  deleteEmployee: (id: string) => {
+  deleteEmployee: (id: number) => {
     return axiosPrivate.delete(`employee/${id}`)
   }
 }

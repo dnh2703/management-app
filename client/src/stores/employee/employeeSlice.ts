@@ -40,7 +40,7 @@ const employeeSlice = createSlice({
     getAllEmployeeErrorAction: (state) => {
       state.isLoading = false
     },
-    deleteEmployeeAction: (state, action: PayloadAction<{ id: string }>) => {
+    deleteEmployeeAction: (state, action: PayloadAction<{ id: number }>) => {
       action
       state.isDeleted = false
     },

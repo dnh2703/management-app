@@ -3,6 +3,11 @@ import { ICustomer } from '~/types/customer.types'
 
 const CustomerSchema = new mongoose.Schema<ICustomer>(
   {
+    customer_id: {
+      type: Number,
+      unique: true,
+      required: [true, 'Please fill the customer_id']
+    },
     name: {
       type: String,
       required: [true, 'Please fill the name']

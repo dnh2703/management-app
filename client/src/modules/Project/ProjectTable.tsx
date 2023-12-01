@@ -57,10 +57,10 @@ const ProjectTable = () => {
           <td className='px-4 py-2 text-sm whitespace-nowrap'>
             <TableAction
               handleDeleteEvent={() => {
-                dispatch(deleteProjectAction({ id: project._id }))
+                dispatch(deleteProjectAction({ id: project.project_id }))
               }}
               handleEditEvent={() => {
-                router.navigate(`${location.pathname}/${project._id}`)
+                router.navigate(`${location.pathname}/${project.project_id}`)
               }}
             />
           </td>

@@ -3,6 +3,11 @@ import { IEmployee } from '~/types/employee.types'
 
 const EmployeeSchema = new mongoose.Schema<IEmployee>(
   {
+    employee_id: {
+      type: Number,
+      required: [true, 'Please fill the first name'],
+      unique: true
+    },
     first_name: {
       type: String,
       required: [true, 'Please fill the first name']

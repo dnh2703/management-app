@@ -22,7 +22,7 @@ function* getAllEmployee(action: PayloadAction<EmployeeQueryAction>) {
   }
 }
 
-function* deleteEmployee(action: PayloadAction<{ id: string }>) {
+function* deleteEmployee(action: PayloadAction<{ id: number }>) {
   try {
     const { id } = action.payload
     const res: AxiosResponse = yield call(employeeApi.deleteEmployee, id)

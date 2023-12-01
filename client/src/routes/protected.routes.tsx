@@ -82,7 +82,7 @@ const protectedRoutes = [
             element: <DepartmentForm />
           },
           {
-            path: ':departmentId',
+            path: ':departmentName',
             element: <DepartmentEdit />
           }
         ]

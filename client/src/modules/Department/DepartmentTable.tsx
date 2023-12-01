@@ -54,10 +54,10 @@ const DepartmentTable = () => {
           <td className='px-4 py-2'>
             <TableAction
               handleDeleteEvent={() => {
-                dispatch(deleteDepartmentAction({ id: department._id }))
+                dispatch(deleteDepartmentAction({ id: department.name }))
               }}
               handleEditEvent={() => {
-                router.navigate(`${location.pathname}/${department._id}`)
+                router.navigate(`${location.pathname}/${department.name}`)
               }}
             />
           </td>

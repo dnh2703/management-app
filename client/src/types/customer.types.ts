@@ -3,6 +3,7 @@ import { IProject } from './project.types'
 interface ICustomer {
   _id: string
   name: string
+  customer_id: string
   company: string
   location: string
   country: string

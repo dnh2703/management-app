@@ -26,10 +26,10 @@ const createDepartment = async (req: Request, res: Response) => {
 const updateDepartment = async (req: Request, res: Response) => {
   const { name, employees_id } = req.body
 
-  const { id: departmentId } = req.params
+  const { id: departmentName } = req.params
 
   const departmentUpdated = await Department.findByIdAndUpdate(
-    { _id: departmentId },
+    { name: departmentName },
     { name, employees: employees_id },
     {
       runValidators: true
@@ -37,7 +37,11 @@ const updateDepartment = async (req: Request, res: Response) => {
   )
 
   if (!departmentUpdated) {
-    throw new CustomAPIError('NOT_FOUND_DEPARTMENT', StatusCodes.NOT_FOUND, `No department with id : ${departmentId}`)
+    throw new CustomAPIError(
+      'NOT_FOUND_DEPARTMENT',
+      StatusCodes.NOT_FOUND,
+      `No department with name : ${departmentName}`
+    )
   }
 
   if (employees_id && Array.isArray(employees_id)) {
@@ -69,7 +73,7 @@ const getAllDepartment = async (req: Request, res: Response) => {
   let options = {}
   const { q } = req.query
 
-  const page: number = parseInt(req.query.page as any) || 0
+  const page: number = parseInt(req.query.page as any) || 1
   const size: number = parseInt(req.query.size as any) || 5
 
   if (q) {
@@ -81,7 +85,7 @@ const getAllDepartment = async (req: Request, res: Response) => {
   const ListDepartment = await Department.find(options)
     .populate('employees')
     .limit(size)
-    .skip(size * page)
+    .skip(size * (page - 1))
 
   let totalPage
   if (Object.keys(options).length) {
@@ -94,28 +98,32 @@ const getAllDepartment = async (req: Request, res: Response) => {
 }
 
 const getSingleDepartment = async (req: Request, res: Response) => {
-  const { id: departmentId } = req.params
+  const { id: departmentName } = req.params
 
-  const department = await Department.findOne({ _id: departmentId }).populate('employees').populate('projects')
+  const department = await Department.findOne({ name: departmentName }).populate('employees').populate('projects')
 
   res.status(StatusCodes.OK).json({ department })
 }
 
 const getAllEmployeeInDepartment = async (req: Request, res: Response) => {
-  const { id: departmentId } = req.params
+  const { id: departmentName } = req.params
 
-  const employees = await Employee.find({ department: departmentId }).populate('projects')
+  const employees = await Employee.findOne({ name: departmentName }).populate('projects')
 
   res.status(StatusCodes.OK).json({ employees })
 }
 
 const deleteDepartment = async (req: Request, res: Response) => {
-  const { id: departmentId } = req.params
+  const { id: departmentName } = req.params
 
-  const department = await Department.findOneAndDelete({ _id: departmentId }, { new: false })
+  const department = await Department.findOneAndDelete({ name: departmentName }, { new: false })
 
   if (!department) {
-    throw new CustomAPIError('NOT_FOUND_DEPARTMENT', StatusCodes.NOT_FOUND, `No department with id : ${departmentId}`)
+    throw new CustomAPIError(
+      'NOT_FOUND_DEPARTMENT',
+      StatusCodes.NOT_FOUND,
+      `No department with name : ${departmentName}`
+    )
   }
 
   await Employee.updateMany({ department: department._id }, { $unset: { department: '' } })

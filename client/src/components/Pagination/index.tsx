@@ -20,17 +20,24 @@ const Pagination = memo(({ totalPage, size, page }: PaginationProps) => {
 
   const currentPage = page
 
+  if (page > totalPage && totalPage != 0) {
+    setSearchParams((prev) => {
+      prev.set('page', `${totalPage}`)
+      return prev
+    })
+  }
+
   const handleFirstPage = () => {
-    if (currentPage > 0) {
+    if (currentPage > 1) {
       setSearchParams((prev) => {
-        prev.set('page', `0`)
+        prev.set('page', `1`)
         return prev
       })
     }
   }
 
   const handleNextPage = () => {
-    if (currentPage < totalPage - 1) {
+    if (currentPage < totalPage) {
       setSearchParams((prev) => {
         prev.set('page', `${currentPage + 1}`)
         return prev
@@ -39,7 +46,7 @@ const Pagination = memo(({ totalPage, size, page }: PaginationProps) => {
   }
 
   const handlePreviousPage = () => {
-    if (currentPage > 0) {
+    if (currentPage > 1) {
       setSearchParams((prev) => {
         prev.set('page', `${currentPage - 1}`)
         return prev
@@ -48,9 +55,9 @@ const Pagination = memo(({ totalPage, size, page }: PaginationProps) => {
   }
 
   const handleLastPage = () => {
-    if (currentPage < totalPage - 1) {
+    if (currentPage < totalPage) {
       setSearchParams((prev) => {
-        prev.set('page', `${totalPage - 1}`)
+        prev.set('page', `${totalPage}`)
         return prev
       })
     }
@@ -84,7 +91,7 @@ const Pagination = memo(({ totalPage, size, page }: PaginationProps) => {
         />
         <div className='flex-nowrap flex text-xs gap-[3px] font-medium ml-4'>
           <span>Page</span>
-          <span className='font-bold'>{currentPage + 1}</span>
+          <span className='font-bold'>{currentPage}</span>
           <span>of</span>
           <span className='font-bold'>{totalPage}</span>
         </div>
@@ -94,7 +101,7 @@ const Pagination = memo(({ totalPage, size, page }: PaginationProps) => {
           type='button'
           className='text-zinc-700 hover:bg-zinc-100 transition-all disabled:cursor-default disabled:text-zin-100 disabled:hover:bg-white'
           onClick={handleFirstPage}
-          disabled={currentPage <= 0}
+          disabled={currentPage <= 1}
         >
           <MdKeyboardDoubleArrowLeft className='w-5 h-5' />
         </Button>
@@ -102,7 +109,7 @@ const Pagination = memo(({ totalPage, size, page }: PaginationProps) => {
           type='button'
           className='text-zinc-700 hover:bg-zinc-000 transition-all disabled:cursor-default disabled:text-zin-100 disabled:hover:bg-white'
           onClick={handlePreviousPage}
-          disabled={currentPage <= 0}
+          disabled={currentPage <= 1}
         >
           <MdKeyboardArrowLeft className='w-5 h-5' />
         </Button>
@@ -110,7 +117,7 @@ const Pagination = memo(({ totalPage, size, page }: PaginationProps) => {
           type='button'
           className='text-zinc-700 hover:bg-zinc-100 transition-all disabled:cursor-default disabled:text-zin-100 disabled:hover:bg-white'
           onClick={handleNextPage}
-          disabled={currentPage >= totalPage - 1}
+          disabled={currentPage >= totalPage}
         >
           <MdKeyboardArrowRight className='w-5 h-5' />
         </Button>
@@ -118,7 +125,7 @@ const Pagination = memo(({ totalPage, size, page }: PaginationProps) => {
           type='button'
           className='text-zinc-700 hover:bg-zinc-100 transition-all disabled:cursor-default disabled:text-zin-100 disabled:hover:bg-white'
           onClick={handleLastPage}
-          disabled={currentPage >= totalPage - 1}
+          disabled={currentPage >= totalPage}
         >
           <MdKeyboardDoubleArrowRight className='w-5 h-5' />
         </Button>
