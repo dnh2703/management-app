@@ -28,7 +28,7 @@ const updateDepartment = async (req: Request, res: Response) => {
 
   const { id: departmentName } = req.params
 
-  const departmentUpdated = await Department.findByIdAndUpdate(
+  const departmentUpdated = await Department.findOneAndUpdate(
     { name: departmentName },
     { name, employees: employees_id },
     {

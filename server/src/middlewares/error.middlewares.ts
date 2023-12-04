@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { StatusCodes, getStatusText } from 'http-status-codes'
+import { StatusCodes } from 'http-status-codes'
 import { MongoError } from 'mongodb'
 import CustomAPIError from '~/errors/custom-api'
 
@@ -27,12 +27,9 @@ const errorHandleMiddleware = (err: CustomAPIError, req: Request, res: Response,
   }
 
   if (err.name === 'CastError') {
-    console.log(err)
     customError.msg = `No item found with id`
     customError.statusCode = StatusCodes.NOT_FOUND
   }
-
-  // console.log(err.message)
 
   return res.status(customError.statusCode).json({ msg: customError.msg })
 }

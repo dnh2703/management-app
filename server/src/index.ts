@@ -12,6 +12,9 @@ import ProjectRoute from './routes/project.routes'
 import TechStackRoute from './routes/techStack.routes'
 import DepartmentRoute from './routes/department.routes'
 import DashboardRoute from './routes/dashboard.routes'
+import swaggerJsdoc from 'swagger-jsdoc'
+import swaggerUi from 'swagger-ui-express'
+import { options } from './doc'
 
 dotenv.config()
 
@@ -19,6 +22,8 @@ const app: Express = express()
 app.use(cors())
 app.use(express.json())
 
+const specs = swaggerJsdoc(options)
+app.use('/api/v1/doc', swaggerUi.serve, swaggerUi.setup(specs))
 app.use('/api/v1/auth', AuthRoute)
 app.use('/api/v1/user', UserRoute)
 app.use('/api/v1/employee', EmployeeRoute)
