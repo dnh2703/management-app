@@ -104,7 +104,7 @@ const EmployeeEdit = () => {
 
   return (
     <>
-      <h3 className='font-bold text-2xl pb-4'>Edit Customer</h3>
+      <h3 className='font-bold text-2xl pb-4'>Edit Employee</h3>
       <div className={`bg-white px-6 pb-8 rounded-lg shadow relative ${employeeQuery.isLoading && 'animate-pulse'}`}>
         <div className='col-span-2 pt-6 pb-5'>
           <EmployeeProjects projects={projects} />
