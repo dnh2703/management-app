@@ -12,7 +12,10 @@ import { authenticateUser, authorizePermissions } from '~/middlewares/authentica
 
 const router = express.Router()
 
-router.route('/').get(authenticateUser, getAllProject).post(authenticateUser, createProject)
+router
+  .route('/')
+  .get(authenticateUser, getAllProject)
+  .post(authenticateUser, authorizePermissions('admin'), createProject)
 router.route('/no-customer').get(authenticateUser, getAllProjectWithoutCustomer)
 router.route('/no-department').get(authenticateUser, getAllProjectWithoutDepartment)
 router
