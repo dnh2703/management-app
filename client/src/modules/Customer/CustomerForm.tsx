@@ -47,7 +47,6 @@ const CustomerForm = () => {
     customerApi
       .createCustomer({ ...data, projects_id })
       .then((res) => {
-        console.log(res)
         if (res.status == 201) {
           toast.success('Success! Customer created', {
             position: toast.POSITION.TOP_RIGHT

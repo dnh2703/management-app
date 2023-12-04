@@ -19,7 +19,6 @@ const refreshAccessToken = async (refreshToken: string): Promise<string> => {
 
     // Extract the refreshed access token from the response
     const refreshedToken = response.data.accessToken
-    console.log(response.data)
     return refreshedToken
   } catch (error) {
     // Handle the token refresh error
